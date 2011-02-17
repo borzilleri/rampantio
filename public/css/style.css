@@ -1,0 +1,10 @@
+#quote {
+	margin: 25px auto;
+	width: 50%;
+	text-align: justify;
+}
+#source {
+	width: 80%;
+	text-align: left;
+	margin: 25px auto;
+}
