@@ -1,0 +1,46 @@
+html, body {
+	height: 100%;
+	background: lightgray;
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	width: 810px;
+}
+
+#main {
+	min-height: 100%;
+	margin: -2px 0;
+	float: left;
+	width: 600px;
+	background: white;
+	border: 1px solid gray;
+	border-left: none;
+	border-bottom-right-radius: 15px;
+	border-top-right-radius: 15px;
+}
+
+#main article {
+	padding: 10px 50px;
+}
+
+#sidebar {
+	min-height: 100%;
+	float: right;
+	width: 200px;
+	text-align: right;
+}
+
+
+#quote {
+	margin: 25px auto;
+	width: 50%;
+	text-align: justify;
+}
+#source {
+	width: 80%;
+	text-align: left;
+	margin: 25px auto;
+}
+
