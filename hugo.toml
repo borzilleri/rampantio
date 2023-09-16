@@ -1,4 +1,18 @@
 baseURL = 'https://example.org/'
 languageCode = 'en-us'
-title = 'My New Hugo Site'
-theme = "m10c"
+defeaultContentLanguage = 'en'
+title = 'Rampant I/O'
+theme = "lynx"
+
+enableEmoji = true
+disableKinds = ["taxonomy", "term"]
+
+[author]
+  name = "Jonathan Borzilleri"
+  # headline = "An awesome person"
+  # image = "img/author.jpg"  # path relative to static directory
+  links = [
+    { email = "mailto:jonathan@borzilleri.net"},
+    { github = "https://github.com/borzilleri" },
+    { mastodon = "https://mastodon.sdf.org/@jmb" }
+  ]
