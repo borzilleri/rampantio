@@ -7,12 +7,13 @@ theme = "lynx"
 enableEmoji = true
 disableKinds = ["taxonomy", "term"]
 
-[author]
-  name = "Jonathan Borzilleri"
-  # headline = "An awesome person"
-  # image = "img/author.jpg"  # path relative to static directory
-  links = [
-    { email = "mailto:jonathan@borzilleri.net"},
-    { github = "https://github.com/borzilleri" },
-    { mastodon = "https://mastodon.sdf.org/@jmb" }
-  ]
+[params.author]
+name = "Jonathan Borzilleri"
+# headline = "An awesome person"
+# image = "img/author.jpg"  # path relative to static directory
+links = [
+  { email = "mailto:jonathan@borzilleri.net" },
+  { github = "https://github.com/borzilleri" },
+  { mastodon = "https://mastodon.sdf.org/@jmb" },
+  { bsky = { text = "Bluesky", href = "https://bsky.borzilleri.net" } },
+]
