@@ -1,7 +1,6 @@
 # rampant.io
 
-A static index of self-contained sub-sites, built with [Eleventy](https://www.11ty.dev)
-and deployed to GitHub Pages.
+A static index of of random things, built with [Eleventy](https://www.11ty.dev).
 
 ## Commands
 
@@ -128,4 +127,4 @@ running `npx playwright install --with-deps chromium && npm test`.
 
 | Path | What it is |
 |---|---|
-| [`mistria-lookup/`](src/mistria-lookup/) | Gifts, recipes, fish and insects for *Fields of Mistria*. Data scraped from the wiki by `scrape.py` into `data.js`. |
+| [`mistria-lookup/`](src/mistria-lookup/) | Searchable index of gifts, recipes, fish, and insects for *Fields of Mistria* |
