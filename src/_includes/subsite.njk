@@ -1,0 +1,6 @@
+---
+layout: base.njk
+---
+{%- import "page-head.njk" as head -%}
+{{ head.pageHead(kicker, title, tagline, source) }}
+{{ content | safe }}

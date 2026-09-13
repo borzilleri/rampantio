@@ -1,0 +1,10 @@
+{%- macro pageHead(kicker, title, lede, source) -%}
+<div class="wrap">
+  <header class="page-head">
+    {%- if kicker %}<p class="kicker">{{ kicker }}</p>{% endif %}
+    <h1>{{ title }}</h1>
+    {%- if lede %}<p class="lede">{{ lede }}</p>{% endif %}
+    {%- if source %}<p class="meta">Data from <a href="{{ source }}" rel="noreferrer">{{ source | host }}</a></p>{% endif %}
+  </header>
+</div>
+{%- endmacro -%}

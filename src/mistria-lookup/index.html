@@ -1,0 +1,23 @@
+---
+layout: subsite.njk
+title: Mistria Lookup
+kicker: Game Reference
+tagline: Searchable One-Page list of gifts, recipes, fish and insects for Fields of Mistria.
+source: https://fieldsofmistria.wiki.gg
+styles:
+  - mistria.css
+scripts:
+  - data.js
+  - app.js
+---
+<div class="wrap">
+  <div class="toolbar">
+    <label class="sr-only" for="q">Search gifts, recipes, fish and insects</label>
+    <input id="q" class="field" type="search" autocomplete="off" autofocus
+           placeholder="Search gifts, recipes, fish…">
+    <span class="count" id="count" aria-live="polite"></span>
+  </div>
+
+  <div id="results"></div>
+  <p class="empty" id="empty" hidden>No matches.</p>
+</div>

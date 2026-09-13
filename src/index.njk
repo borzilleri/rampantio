@@ -1,0 +1,19 @@
+---
+layout: base.njk
+---
+{%- import "page-head.njk" as head -%}
+{{ head.pageHead("Index", site.name, site.tagline) }}
+<div class="wrap">
+  <ul class="card-grid">
+    {%- for sub in collections.subsites %}
+    <li class="card">
+      {%- if sub.data.kicker %}<p class="kicker">{{ sub.data.kicker }}</p>{% endif %}
+      <h2><a href="{{ sub.url | url }}">{{ sub.data.title }}</a></h2>
+      {%- if sub.data.tagline %}<p>{{ sub.data.tagline }}</p>{% endif %}
+      <p class="card__go">Open &rarr;</p>
+    </li>
+    {%- else %}
+    <li class="empty">No sub-sites yet.</li>
+    {%- endfor %}
+  </ul>
+</div>

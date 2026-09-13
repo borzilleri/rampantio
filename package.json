@@ -1,0 +1,22 @@
+{
+  "name": "Rampant I/O",
+  "version": "1.0.0",
+  "description": "Rampant I/O — an index of self-contained sub-sites.",
+  "scripts": {
+    "build": "eleventy",
+    "dev": "eleventy --serve",
+    "clean": "node -e \"require('fs').rmSync('_site',{recursive:true,force:true})\"",
+    "test": "playwright test",
+    "test:ui": "playwright test --ui"
+  },
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "@11ty/eleventy": "^3.1.6"
+  },
+  "private": true,
+  "devDependencies": {
+    "@playwright/test": "^1.63.0"
+  }
+}
