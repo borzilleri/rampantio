@@ -2,7 +2,14 @@
    Only what's specific to this data shape lives here; .section, .label,
    .table-wrap, .toolbar, .field and .count all come from base.css. */
 
-.npc { padding-block: 0.6rem; border-top: 1px solid var(--line); }
+/* Banding tints the whole block, so it bleeds into the page gutter rather than
+   stopping short of the text it wraps; the margin cancels the padding to leave
+   that text aligned with the heading above. */
+.npc {
+  padding: 0.6rem 0.75rem;
+  margin-inline: -0.75rem;
+  border-top: 1px solid var(--line);
+}
 .npc:first-of-type { border-top: none; }
 .npc > h3 { font-size: 0.95rem; line-height: 1.4; margin-bottom: 0.15rem; }
 
@@ -15,10 +22,11 @@
 
 .section table td:first-child { font-weight: 500; }
 
-/* Zebra striping. `of :not([hidden])` counts only the rows the filter left
-   showing, so plain nth-child parity can't double up a tint mid-table. The
-   stripe outranks the base hover on specificity, hence the restatement. */
-tbody tr:nth-child(2n of :not([hidden])) {
-  background: light-dark(rgb(27 27 32 / .035), rgb(255 255 255 / .035));
-}
+/* Banding for both shapes of list. `of …:not([hidden])` counts only what the
+   filter left showing, so plain nth-child parity can't double up a tint after
+   a search. The stripe outranks the base row hover on specificity, hence the
+   restatement. */
+tbody tr:nth-child(2n of :not([hidden])),
+.npc:nth-child(2n of .npc:not([hidden])) { background: var(--stripe); }
+
 tbody tr:nth-child(2n of :not([hidden])):hover { background: var(--surface-2); }

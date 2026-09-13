@@ -20,6 +20,7 @@
   --line-strong: light-dark(#cbc7bf, #3b3c47);
   --accent:      light-dark(#a8561f, #e3a367);
   --accent-soft: light-dark(#f7ece2, #2a2018);
+  --stripe:      light-dark(rgb(27 27 32 / .035), rgb(255 255 255 / .035));
   --shadow:      0 1px 2px light-dark(rgb(27 27 32 / .05), rgb(0 0 0 / .3));
 
   --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,

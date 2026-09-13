@@ -140,25 +140,39 @@ test.describe("mistria lookup", () => {
     await expect(page.locator("#q")).toHaveValue("carpf");
   });
 
-  test("stripes alternate over the visible rows, not the hidden ones", async ({ page }) => {
-    const tints = () =>
-      page.$$eval("#results tbody", (bodies) =>
-        bodies.map((b) =>
-          [...b.rows].filter((r) => !r.hidden).map((r) => getComputedStyle(r).backgroundColor)
-        )
-      );
+  // Table rows and NPC blocks band the same way; both count visible siblings.
+  for (const [what, sel, kids] of [
+    ["table rows", "#results tbody", "tr"],
+    ["NPC blocks", "#results .section", ".npc"],
+  ]) {
+    test(`${what} band over the visible entries, not the hidden ones`, async ({ page }) => {
+      const tints = () =>
+        page.$$eval(
+          sel,
+          (groups, kids) =>
+            groups
+              .map((g) =>
+                [...g.querySelectorAll(kids)]
+                  .filter((el) => !el.hidden)
+                  .map((el) => getComputedStyle(el).backgroundColor)
+              )
+              .filter((band) => band.length > 1),
+          kids
+        );
 
-    // Filtering must renumber the stripes, not leave a gap where a row was.
-    for (const q of ["", "a"]) {
-      await page.locator("#q").fill(q);
-      for (const rows of await tints()) {
-        expect(rows.length).toBeGreaterThan(1);
-        const [plain, tinted] = rows;
-        expect(tinted).not.toBe(plain);
-        expect(rows).toEqual(rows.map((_, i) => (i % 2 ? tinted : plain)));
+      // Filtering must renumber the bands, not leave a gap where an entry was.
+      for (const q of ["", "a"]) {
+        await page.locator("#q").fill(q);
+        const groups = await tints();
+        expect(groups.length).toBeGreaterThan(0);
+        for (const band of groups) {
+          const [plain, tinted] = band;
+          expect(tinted).not.toBe(plain);
+          expect(band).toEqual(band.map((_, i) => (i % 2 ? tinted : plain)));
+        }
       }
-    }
-  });
+    });
+  }
 
   test("?q= deep-links a search and typing updates the URL", async ({ page }) => {
     await page.goto("/mistria-lookup/?q=salmon");
