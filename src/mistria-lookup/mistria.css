@@ -14,3 +14,11 @@
 .row li:not([hidden]) ~ li:not([hidden])::before { content: ", "; color: var(--muted); }
 
 .section table td:first-child { font-weight: 500; }
+
+/* Zebra striping. `of :not([hidden])` counts only the rows the filter left
+   showing, so plain nth-child parity can't double up a tint mid-table. The
+   stripe outranks the base hover on specificity, hence the restatement. */
+tbody tr:nth-child(2n of :not([hidden])) {
+  background: light-dark(rgb(27 27 32 / .035), rgb(255 255 255 / .035));
+}
+tbody tr:nth-child(2n of :not([hidden])):hover { background: var(--surface-2); }

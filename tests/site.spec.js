@@ -125,6 +125,41 @@ test.describe("mistria lookup", () => {
     await expect(page.locator("#count")).toHaveText(`0 of ${TOTAL}`);
   });
 
+  test("f focuses the search box from elsewhere on the page, but never steals a keystroke", async ({ page }) => {
+    await page.locator("#q").fill("salmon");
+    await page.locator(".mode").focus();
+
+    await page.keyboard.press("f");
+    await expect(page.locator("#q")).toBeFocused();
+    // The shortcut selects, so the next keystroke replaces the old search.
+    await page.keyboard.type("carp");
+    await expect(page.locator("#q")).toHaveValue("carp");
+
+    // Already in the field, f is just a letter.
+    await page.keyboard.press("f");
+    await expect(page.locator("#q")).toHaveValue("carpf");
+  });
+
+  test("stripes alternate over the visible rows, not the hidden ones", async ({ page }) => {
+    const tints = () =>
+      page.$$eval("#results tbody", (bodies) =>
+        bodies.map((b) =>
+          [...b.rows].filter((r) => !r.hidden).map((r) => getComputedStyle(r).backgroundColor)
+        )
+      );
+
+    // Filtering must renumber the stripes, not leave a gap where a row was.
+    for (const q of ["", "a"]) {
+      await page.locator("#q").fill(q);
+      for (const rows of await tints()) {
+        expect(rows.length).toBeGreaterThan(1);
+        const [plain, tinted] = rows;
+        expect(tinted).not.toBe(plain);
+        expect(rows).toEqual(rows.map((_, i) => (i % 2 ? tinted : plain)));
+      }
+    }
+  });
+
   test("?q= deep-links a search and typing updates the URL", async ({ page }) => {
     await page.goto("/mistria-lookup/?q=salmon");
     await expect(page.locator("#q")).toHaveValue("salmon");

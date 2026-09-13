@@ -121,4 +121,15 @@
     filter();
     syncUrl();
   });
+
+  /* `f` jumps to the search box from anywhere on the page — but never out from
+     under a field that is already taking the keystroke. */
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'f' || e.metaKey || e.ctrlKey || e.altKey) return;
+    const el = document.activeElement;
+    if (el?.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(el?.tagName)) return;
+    e.preventDefault();
+    q.focus();
+    q.select();
+  });
 })();
