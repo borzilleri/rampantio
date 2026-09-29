@@ -1,0 +1,87 @@
+/* Heat Tracker — extends the rampant.io baseline. Built phone-first: every
+   control is a thumb-sized target and the four rows fit one screen. */
+
+.heat {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.75rem;
+}
+.heat, .heat__foot, .heat__boost { max-width: 32rem; }
+
+.heat__boost { display: grid; gap: 0.35rem; margin-bottom: 1.25rem; }
+.heat__boost output { font: 600 2.75rem/1 var(--font-mono); letter-spacing: -0.02em; }
+
+/* Number, remaining, then the two buttons at the thumb's edge. */
+.heat__row {
+  display: grid;
+  grid-template-columns: auto 1fr auto auto;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  transition: opacity 0.15s;
+}
+.heat__row[data-empty] { opacity: 0.55; }
+
+.heat__num {
+  font: 600 2.25rem/1 var(--font-mono);
+  min-width: 2ch;
+  text-align: center;
+  color: var(--accent);
+}
+
+.heat__left { display: grid; gap: 0.4rem; }
+
+/* Pips, then this number's chance of being the next boost card. */
+.heat__line { display: flex; align-items: center; gap: 0.6rem; }
+.heat__odds { font: 600 0.95rem/1 var(--font-mono); color: var(--accent); }
+.heat__row[data-empty] .heat__odds { color: var(--muted); }
+
+/* One pip per card of this number; lit while it's still in the deck. */
+.heat__pips { display: flex; gap: 0.3rem; }
+.heat__pips i {
+  width: 0.7rem;
+  height: 0.7rem;
+  border-radius: 50%;
+  border: 1.5px solid var(--accent);
+  background: var(--accent);
+  transition: background 0.15s;
+}
+.heat__pips i[data-played] { background: transparent; border-color: var(--line-strong); }
+
+.heat button {
+  width: 3.25rem;
+  height: 3.25rem;
+  font: 500 1.6rem/1 var(--font-mono);
+  color: var(--text);
+  background: var(--surface-2);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  cursor: pointer;
+  touch-action: manipulation; /* no double-tap zoom when tapping quickly */
+  transition: border-color 0.15s, color 0.15s;
+}
+.heat button:hover:not(:disabled) { border-color: var(--accent); color: var(--accent); }
+.heat button:disabled { opacity: 0.35; cursor: default; }
+.heat button[data-play] { background: var(--accent-soft); }
+
+.heat__foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-block: 1.25rem 0;
+}
+
+/* The header's .mode pill, sized up for a thumb. */
+.heat__reset {
+  font-size: 0.75rem;
+  padding: 0.75rem 1.1rem;
+  touch-action: manipulation;
+}
+.heat__reset[data-armed] { color: var(--accent); border-color: var(--accent); }

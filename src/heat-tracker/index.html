@@ -1,0 +1,24 @@
+---
+layout: subsite.njk
+title: Heat Tracker
+kicker: Board Game
+tagline: Track which speed cards are left in your Heat — Pedal to the Metal deck.
+styles:
+  - heat.css
+scripts:
+  - app.js
+---
+<div class="wrap">
+  <div class="heat__boost">
+    <p class="label" id="ev-label">Boost expected value</p>
+    <output id="ev" aria-labelledby="ev-label" aria-live="polite"></output>
+    <p class="meta">Each row shows its chance of being the next boost card.</p>
+  </div>
+
+  <ul class="heat" id="cards"></ul>
+
+  <div class="heat__foot">
+    <span class="count" id="total" aria-live="polite"></span>
+    <button class="mode heat__reset" id="reset" type="button">Reset</button>
+  </div>
+</div>

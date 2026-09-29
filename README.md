@@ -26,6 +26,7 @@ src/
   assets/js/shell.js        shared behaviour (theme preference)
   index.njk                 landing page; renders the `subsites` collection
   mistria-lookup/           a subsite
+  heat-tracker/             a subsite
 tests/site.spec.js          shell, landing-page and subsite smoke tests
 .github/workflows/deploy.yml
 ```
@@ -106,7 +107,9 @@ Requires Chrome 123+, Safari 17.5+, Firefox 120+.
 and mobile viewports: every page renders the shell with no console errors and
 no horizontal overflow, the theme toggle cycles and actually repaints, the
 landing page lists the `subsites` collection, and Mistria's search filters,
-counts, empty state and `?q=` deep-links all behave.
+counts, empty state and `?q=` deep-links all behave. The Heat tracker's counts
+stay within 0–3, persist across reloads and reset, and its boost odds and
+expected value follow the cards left.
 
 Adding a subsite doesn't require new tests, but the shell assertions will catch
 one that breaks the layout.
@@ -127,4 +130,5 @@ running `npx playwright install --with-deps chromium && npm test`.
 
 | Path | What it is |
 |---|---|
+| [`heat-tracker/`](src/heat-tracker/) | Tracks which 1–4 speed cards are left in a *Heat: Pedal to the Metal* deck |
 | [`mistria-lookup/`](src/mistria-lookup/) | Searchable index of gifts, recipes, fish, and insects for *Fields of Mistria* |

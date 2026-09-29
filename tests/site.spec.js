@@ -2,7 +2,7 @@ import { test as base, expect } from "@playwright/test";
 
 /** Entry count rendered from data.js; regenerating it via scrape.py moves this. */
 const TOTAL = "1,974";
-const PAGES = ["/", "/mistria-lookup/"];
+const PAGES = ["/", "/mistria-lookup/", "/heat-tracker/"];
 
 /**
  * Every test fails if the page logged an error or failed to load a resource —
@@ -181,5 +181,77 @@ test.describe("mistria lookup", () => {
 
     await page.locator("#q").fill("carp");
     await expect(page).toHaveURL(/\?q=carp$/);
+  });
+});
+
+test.describe("heat tracker", () => {
+  const row = (page, n) => page.locator(".heat__row").nth(n - 1);
+  const playAll = async (page, n) => {
+    const play = row(page, n).getByRole("button", { name: `Play a ${n}` });
+    for (let i = 0; i < 3; i++) await play.click();
+  };
+
+  test.beforeEach(async ({ page }) => {
+    await page.goto("/heat-tracker/");
+  });
+
+  test("starts with a full deck", async ({ page }) => {
+    await expect(page.locator(".heat__row")).toHaveCount(4);
+    await expect(page.locator("#total")).toHaveText("12 of 12 left");
+    await expect(row(page, 1).locator("[data-left]")).toHaveText("3 of 3 left");
+    await expect(row(page, 1).getByRole("button", { name: "Put back a 1" })).toBeDisabled();
+  });
+
+  test("boost expected value and odds follow the cards left", async ({ page }) => {
+    const odds = page.locator("[data-odds]");
+    await expect(page.locator("#ev")).toHaveText("2.50");
+    await expect(odds).toHaveText(["25%", "25%", "25%", "25%"]);
+
+    // With every 2 gone, a boost is 1, 3 or 4 at a third each: (1 + 3 + 4) / 3.
+    await playAll(page, 2);
+    await expect(page.locator("#ev")).toHaveText("2.67");
+    await expect(odds).toHaveText(["33%", "0%", "33%", "33%"]);
+
+    // An empty deck reshuffles before the next boost, so there's nothing to show.
+    for (const n of [1, 3, 4]) await playAll(page, n);
+    await expect(page.locator("#ev")).toHaveText("—");
+    await expect(odds).toHaveText(["—", "—", "—", "—"]);
+  });
+
+  test("play and put back stay within 0–3 copies", async ({ page }) => {
+    const r = row(page, 2);
+    const play = r.getByRole("button", { name: "Play a 2" });
+    await playAll(page, 2);
+
+    await expect(r.locator("[data-left]")).toHaveText("0 of 3 left");
+    await expect(play).toBeDisabled();
+    await expect(r.locator(".heat__pips i[data-played]")).toHaveCount(3);
+    await expect(page.locator("#total")).toHaveText("9 of 12 left");
+
+    await r.getByRole("button", { name: "Put back a 2" }).click();
+    await expect(r.locator("[data-left]")).toHaveText("1 of 3 left");
+    await expect(play).toBeEnabled();
+  });
+
+  test("counts survive a reload", async ({ page }) => {
+    await row(page, 4).getByRole("button", { name: "Play a 4" }).click();
+    await page.reload();
+    await expect(row(page, 4).locator("[data-left]")).toHaveText("2 of 3 left");
+    await expect(page.locator("#total")).toHaveText("11 of 12 left");
+  });
+
+  test("reset takes a confirming second tap", async ({ page }) => {
+    await row(page, 1).getByRole("button", { name: "Play a 1" }).click();
+    const reset = page.locator("#reset");
+
+    await reset.click();
+    await expect(reset).toHaveText("Tap to confirm");
+    await expect(page.locator("#total")).toHaveText("11 of 12 left");
+
+    await reset.click();
+    await expect(reset).toHaveText("Reset");
+    await expect(page.locator("#total")).toHaveText("12 of 12 left");
+    await page.reload();
+    await expect(page.locator("#total")).toHaveText("12 of 12 left");
   });
 });
