@@ -1,0 +1,47 @@
+---
+layout: subsite.njk
+title: Brine Calculator
+kicker: Kitchen
+tagline: How much salt to add to your water for a fermentation brine.
+styles:
+  - brine.css
+scripts:
+  - app.js
+---
+<div class="wrap">
+  <form class="brine" id="brine">
+    <fieldset class="brine__ratios" id="ratios">
+      <legend class="sr-only">Brine ratio</legend>
+    </fieldset>
+
+    <div class="brine__field" id="pct-row" hidden>
+      <label class="label" for="pct">Salt percentage</label>
+      <div class="brine__pair">
+        <input class="field" id="pct" name="pct" type="number" inputmode="decimal" min="0" step="any" value="2">
+        <span class="brine__suffix" aria-hidden="true">%</span>
+      </div>
+    </div>
+
+    <div class="brine__field">
+      <label class="label" for="water">Water</label>
+      <div class="brine__pair">
+        <input class="field" id="water" name="water" type="number" inputmode="decimal" min="0" step="any" value="1">
+        <select class="field" name="unit" aria-label="Water unit">
+          <option value="gal">gallons</option>
+          <option value="qt" selected>quarts</option>
+          <option value="pt">pints</option>
+          <option value="cup">cups</option>
+          <option value="ml">ml</option>
+          <option value="g">grams</option>
+        </select>
+      </div>
+    </div>
+
+  </form>
+
+  <div class="brine__out">
+    <p class="label" id="result-label">Add salt</p>
+    <output id="result" aria-labelledby="result-label" aria-live="polite"></output>
+    <p class="meta" id="detail"></p>
+  </div>
+</div>

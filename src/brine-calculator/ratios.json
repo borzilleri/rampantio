@@ -1,0 +1,5 @@
+[
+  { "name": "Basic", "percent": 3 },
+  { "name": "Cucumber", "percent": 5 },
+  { "name": "Kimchi", "percent": 6 }
+]

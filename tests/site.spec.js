@@ -2,7 +2,7 @@ import { test as base, expect } from "@playwright/test";
 
 /** Entry count rendered from data.js; regenerating it via scrape.py moves this. */
 const TOTAL = "1,974";
-const PAGES = ["/", "/mistria-lookup/", "/heat-tracker/"];
+const PAGES = ["/", "/mistria-lookup/", "/heat-tracker/", "/brine-calculator/"];
 
 /**
  * Every test fails if the page logged an error or failed to load a resource —
@@ -253,5 +253,61 @@ test.describe("heat tracker", () => {
     await expect(page.locator("#total")).toHaveText("12 of 12 left");
     await page.reload();
     await expect(page.locator("#total")).toHaveText("12 of 12 left");
+  });
+});
+
+test.describe("brine calculator", () => {
+  const ratio = (page, name) => page.locator(".brine__ratios label", { hasText: name });
+  const result = (page) => page.locator("#result");
+
+  test.beforeEach(async ({ page }) => {
+    await page.goto("/brine-calculator/");
+  });
+
+  test("tabs are the configured presets plus Manual", async ({ page }) => {
+    await expect(page.locator(".brine__ratios label")).toHaveText(["Basic3%", "Cucumber5%", "Kimchi6%", "ManualCustom"]);
+    await expect(page.locator(".brine__ratios input").first()).toBeChecked();
+  });
+
+  test("imperial water is converted to grams before the ratio", async ({ page }) => {
+    // 1 qt is 946 g of water; 3% of that is 28.4 g.
+    await expect(result(page)).toHaveText("28 g");
+    await expect(page.locator("#detail")).toHaveText("3% of 946 g of water");
+
+    await page.locator("[name=unit]").selectOption("gal");
+    await ratio(page, "Kimchi").click();
+    // 6% of 3,785 g.
+    await expect(result(page)).toHaveText("227 g");
+    await expect(page.locator("#pct-row")).toBeHidden();
+  });
+
+  test("metric water gets salt in grams", async ({ page }) => {
+    await page.locator("[name=unit]").selectOption("ml");
+    await page.locator("#water").fill("1000");
+    await ratio(page, "Cucumber").click();
+    await expect(result(page)).toHaveText("50 g");
+  });
+
+  test("manual takes a custom percentage", async ({ page }) => {
+    await page.locator("[name=unit]").selectOption("g");
+    await page.locator("#water").fill("500");
+    await ratio(page, "Manual").click();
+    await page.locator("#pct").fill("2.5");
+    await expect(result(page)).toHaveText("13 g");
+    await expect(page.locator("#detail")).toHaveText("2.5% of 500 g of water");
+
+    await page.locator("#pct").fill("");
+    await expect(result(page)).toHaveText("—");
+  });
+
+  test("settings survive a reload", async ({ page }) => {
+    await ratio(page, "Manual").click();
+    await page.locator("#pct").fill("4");
+    await page.locator("[name=unit]").selectOption("ml");
+    await page.locator("#water").fill("1000");
+    await page.reload();
+    await expect(page.locator("#pct")).toHaveValue("4");
+    await expect(page.locator("[name=unit]")).toHaveValue("ml");
+    await expect(result(page)).toHaveText("40 g");
   });
 });

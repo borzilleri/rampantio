@@ -27,6 +27,7 @@ src/
   index.njk                 landing page; renders the `subsites` collection
   mistria-lookup/           a subsite
   heat-tracker/             a subsite
+  brine-calculator/         a subsite
 tests/site.spec.js          shell, landing-page and subsite smoke tests
 .github/workflows/deploy.yml
 ```
@@ -109,7 +110,9 @@ no horizontal overflow, the theme toggle cycles and actually repaints, the
 landing page lists the `subsites` collection, and Mistria's search filters,
 counts, empty state and `?q=` deep-links all behave. The Heat tracker's counts
 stay within 0–3, persist across reloads and reset, and its boost odds and
-expected value follow the cards left.
+expected value follow the cards left. The Brine calculator builds its ratio tabs
+from `ratios.json`, gives salt in grams for any water unit, and remembers its
+settings.
 
 Adding a subsite doesn't require new tests, but the shell assertions will catch
 one that breaks the layout.
@@ -130,5 +133,6 @@ running `npx playwright install --with-deps chromium && npm test`.
 
 | Path | What it is |
 |---|---|
+| [`brine-calculator/`](src/brine-calculator/) | Salt to add to water for a fermentation brine, by ratio |
 | [`heat-tracker/`](src/heat-tracker/) | Tracks which 1–4 speed cards are left in a *Heat: Pedal to the Metal* deck |
 | [`mistria-lookup/`](src/mistria-lookup/) | Searchable index of gifts, recipes, fish, and insects for *Fields of Mistria* |

@@ -1,0 +1,66 @@
+/* Brine Calculator — extends the rampant.io baseline. One narrow column:
+   ratio tabs, the inputs, then the answer at a size you can read across a
+   kitchen counter. */
+
+.brine, .brine__out { max-width: 32rem; }
+.brine { display: grid; gap: 1.25rem; }
+.brine__field { display: grid; gap: 0.5rem; }
+
+/* Ratio picker: a radio group drawn as a segmented tab bar. */
+.brine__ratios {
+  display: grid;
+  grid-auto-flow: column; /* one equal column per tab, however many presets */
+  grid-auto-columns: 1fr;
+  gap: 0.25rem;
+  margin: 0;
+  padding: 0.25rem;
+  min-width: 0;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+.brine__ratios label { display: grid; cursor: pointer; }
+.brine__ratios input { position: absolute; opacity: 0; pointer-events: none; }
+.brine__ratios span {
+  display: grid;
+  justify-items: center;
+  gap: 0.3rem;
+  padding: 0.6rem 0.25rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--muted);
+  border: 1px solid transparent;
+  border-radius: calc(var(--radius) - 3px);
+  transition: color 0.15s, background 0.15s, border-color 0.15s;
+}
+.brine__ratios .label { color: inherit; } /* follow the tab's selected colour */
+.brine__ratios label:hover span { color: var(--text); }
+.brine__ratios input:checked + span {
+  color: var(--accent);
+  background: var(--surface);
+  border-color: var(--line);
+  box-shadow: var(--shadow);
+}
+.brine__ratios input:focus-visible + span { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* Value and its unit side by side. */
+.brine__pair { display: flex; gap: 0.6rem; }
+.brine__pair input { flex: 1; min-width: 0; font: 500 1.15rem/1.4 var(--font-mono); }
+.brine__pair select { flex: none; width: auto; }
+.brine__suffix { align-self: center; font: 500 1.15rem/1 var(--font-mono); color: var(--muted); }
+
+.brine__out {
+  display: grid;
+  gap: 0.6rem;
+  margin-top: 1.75rem;
+  padding: 1.4rem;
+  background: var(--accent-soft);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+.brine__out output {
+  font: 600 clamp(2rem, 1.5rem + 2.5vw, 2.75rem)/1.1 var(--font-mono);
+  letter-spacing: -0.02em;
+  color: var(--accent);
+  text-wrap: balance;
+}
